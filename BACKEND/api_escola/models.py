@@ -8,11 +8,21 @@ class Matricula(Base):
     id = Column(Integer, primary_key=True, index=True)
     aluno_id = Column(Integer, ForeignKey("alunos.id"))
     curso_id = Column(Integer, ForeignKey("cursos.id"))
-
     status = Column(String, default="ativa")
 
     aluno = relationship("Aluno", back_populates="matriculas")
     curso = relationship("Curso", back_populates="matriculas")
+
+
+class Aluno(Base):
+    __tablename__ = "alunos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String)
+    email = Column(String)
+
+    matriculas = relationship("Matricula", back_populates="aluno")
+
 
 class Curso(Base):
     __tablename__ = "cursos"
@@ -21,20 +31,7 @@ class Curso(Base):
     nome = Column(String)
     descricao = Column(String)
 
-    alunos = relationship("Aluno", back_populates="curso")
-
-
-class Aluno(Base):
-    __tablename__ = "alunos"
-
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
-    idade = Column(Integer)
-
-    curso_id = Column(Integer, ForeignKey("cursos.id"))
-
-    curso = relationship("Curso", back_populates="alunos")
-
+    matriculas = relationship("Matricula", back_populates="curso")
 #Aqui criamos relacionamento entre as tabelas 
 
 #CURSO id, idade, descricao

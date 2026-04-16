@@ -15,18 +15,17 @@ def get_db():
     db.close()
 #CRUD Alunos
 @app.post("/alunos")
-def criar_alunos(aluno: schemas.AlunoCreate, db: Session = Depends(get_db)):
-    return crud.criar_aluno(db, alunos)
+def criar_aluno(aluno: schemas.AlunoCreate, db: Session = Depends(get_db)):
+    return crud_alunos.criar_aluno(db, aluno)
 
 @app.get("/alunos")
 def listar_alunos(page: int = 1, limit: int = 10, db: Session = Depends(get_db)):
     query = db.query(models.Aluno)
-    return paginate(query, page, limit)
-
+    return query.offset((page - 1) * limit).limit(limit).all()
 
 @app.get("/alunos/{aluno_id}")
 def buscar_aluno(aluno_id: int, db: Session = Depends(get_db)):
-    aluno = crud.buscar_aluno(db, aluno_id)
+    aluno = crud_alunos.buscar_aluno(db, aluno_id)
     
     if not aluno:
         raise HTTPException(status_code=404, detail="Aluno não encontrado")
@@ -37,7 +36,7 @@ def buscar_aluno(aluno_id: int, db: Session = Depends(get_db)):
   
 @app.put("/alunos/{aluno_id}")
 def atualizar_aluno(aluno_id: int, aluno: schemas.AlunoCreate, db: Session = Depends(get_db)):
-    aluno_atualizado = crud.atualizar_aluno(db, aluno_id, aluno)
+    aluno_atualizado = crud_alunos.atualizar_aluno(db, aluno_id, aluno)
 
 
     if not aluno_atualizado:
@@ -50,7 +49,7 @@ def atualizar_aluno(aluno_id: int, aluno: schemas.AlunoCreate, db: Session = Dep
   
 @app.delete("/alunos/{aluno_id}")
 def deletar_aluno(aluno_id: int, db: Session = Depends(get_db)):
-    aluno = crud.deletar_aluno(db, aluno_id)
+    aluno = crud_alunos.deletar_aluno(db, aluno_id)
     
     if not aluno:
         raise HTTPException(status_code=404, detail="Aluno não encontrado") 
@@ -63,17 +62,16 @@ def deletar_aluno(aluno_id: int, db: Session = Depends(get_db)):
 #CRUD Cursos
 @app.post("/cursos")
 def criar_curso(curso: schemas.CursoCreate, db: Session = Depends(get_db)):
-    novo = crud_cursos.criar_curso(db, curso)
-    return success_response(novo, "Curso criado com sucesso")
+    return crud_cursos.criar_curso(db, curso)
 
 @app.get("/cursos")
 def listar_cursos(page: int = 1, limit: int = 10, db: Session = Depends(get_db)):
     query = db.query(models.Curso)
-    return paginate(query, page, limit)
+    return query.offset((page - 1) * limit).limit(limit).all()
 
 @app.get("/cursos/{curso_id}")
 def buscar_curso(curso_id: int, db: Session = Depends(get_db)):
-    curso = crud.buscar_curso(db, curso_id)
+    curso = crud_cursos.buscar_curso(db, curso_id)
 
     if not curso:
         raise HTTPException(status_code=404, detail="Curso não encontrado")
@@ -82,7 +80,7 @@ def buscar_curso(curso_id: int, db: Session = Depends(get_db)):
 
 @app.put("/cursos/{curso_id}")
 def atualizar_curso(curso_id: int, curso: schemas.CursoUpdate, db: Session = Depends(get_db)):
-    curso_atualizado = crud.atualizar_curso(db, curso_id, curso)
+    curso_atualizado = crud_cursos.atualizar_curso(db, curso_id, curso)
 
     if not curso_atualizado:
         raise HTTPException(status_code=404, detail="Curso não encontrado")
