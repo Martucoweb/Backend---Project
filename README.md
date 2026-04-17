@@ -1,8 +1,8 @@
-Perfeito — organizei e formatei tudo corretamente em **Markdown profissional para GitHub** 👇
+
 
 ---
 
-```markdown
+```
 # 📚 Backend Project - API Escola
 
 Sistema de cadastro e gerenciamento de **alunos, cursos e matrículas**, desenvolvido com **FastAPI + SQLAlchemy**.
