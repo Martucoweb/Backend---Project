@@ -2,192 +2,256 @@
 
 ---
 
+````
+# 📚 API Escola - FastAPI
+
+Sistema de gerenciamento de alunos, cursos e matrículas desenvolvido com FastAPI + SQLAlchemy.
+
+---
+
+## 🚀 Objetivo
+
+Esta API permite:
+
+- Gerenciar alunos
+- Gerenciar cursos
+- Controlar matrículas
+- Aplicar regras de negócio (validações reais)
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- Python 3.12
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- Uvicorn
+
+---
+
+## ▶️ Como Executar o Projeto
+
+### 1. Acesse a pasta do projeto
+
+```bash
+cd api_escola
+````
+
+---
+
+### 2. Instale as dependências
+
+```bash
+pip install fastapi uvicorn sqlalchemy pydantic[email]
 ```
-# 📚 Backend Project - API Escola
-
-Sistema de cadastro e gerenciamento de **alunos, cursos e matrículas**, desenvolvido com **FastAPI + SQLAlchemy**.
 
 ---
 
-## 🚀 Funcionalidades
+### 3. Execute o servidor
 
-### 👨‍🎓 Alunos
-- Criar aluno  
-- Listar alunos  
-- Buscar aluno por ID  
-- Atualizar aluno  
-- Deletar aluno  
+```bash
+python -m uvicorn main:app --reload
+```
 
 ---
 
-### 📖 Cursos
-- Criar curso  
-- Listar cursos  
-- Buscar curso por ID  
-- Atualizar curso  
-- Deletar curso  
+### 4. A API estará disponível em:
+
+```
+http://127.0.0.1:8000
+```
 
 ---
 
-### 📝 Matrículas
-- Matricular aluno em curso  
-- Listar cursos de um aluno  
-- Listar alunos de um curso  
-- Cancelar matrícula  
-- Concluir curso  
+## 🧪 Testando a API com Postman
+
+Utilize o **Postman** para realizar requisições HTTP.
+
+### Base URL:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 📌 Endpoints
+
+---
+
+### 👨‍🎓 ALUNOS
+
+#### Criar aluno
+
+POST `/alunos`
+
+```json
+{
+  "nome": "Marcos",
+  "email": "marcos@email.com"
+}
+```
+
+---
+
+#### Listar alunos
+
+GET `/alunos?page=1&limit=10`
+
+---
+
+#### Buscar aluno por ID
+
+GET `/alunos/{id}`
+
+---
+
+#### Atualizar aluno
+
+PUT `/alunos/{id}`
+
+```json
+{
+  "nome": "Novo Nome",
+  "email": "novo@email.com"
+}
+```
+
+---
+
+#### Deletar aluno
+
+DELETE `/alunos/{id}`
+
+---
+
+## 📖 CURSOS
+
+#### Criar curso
+
+POST `/cursos`
+
+```json
+{
+  "nome": "Python",
+  "descricao": "Curso completo de Python"
+}
+```
+
+---
+
+#### Listar cursos
+
+GET `/cursos?page=1&limit=10`
+
+---
+
+#### Buscar curso por ID
+
+GET `/cursos/{id}`
+
+---
+
+#### Atualizar curso
+
+PUT `/cursos/{id}`
+
+---
+
+#### Deletar curso
+
+DELETE `/cursos/{id}`
+
+---
+
+## 📝 MATRÍCULAS
+
+#### Matricular aluno
+
+POST `/matriculas`
+
+```json
+{
+  "aluno_id": 1,
+  "curso_id": 1
+}
+```
+
+---
+
+#### Listar cursos de um aluno
+
+GET `/alunos/{id}/cursos`
+
+---
+
+#### Listar alunos de um curso
+
+GET `/cursos/{id}/alunos`
+
+---
+
+#### Cancelar matrícula
+
+PUT `/matriculas/{id}/cancelar`
+
+---
+
+#### Concluir curso
+
+PUT `/matriculas/{id}/concluir`
 
 ---
 
 ## ⚙️ Regras de Negócio
 
 ### 📌 Matrículas
-- ❌ Um aluno **não pode se matricular duas vezes** no mesmo curso  
-- ❌ Não permite matrícula de:
-  - aluno inexistente  
-  - curso inexistente  
-- ⚠️ Um aluno pode ter no máximo **5 matrículas ativas**  
+
+* ❌ Não permite matrícula duplicada
+* ❌ Não permite aluno inexistente
+* ❌ Não permite curso inexistente
+* ⚠️ Máximo de 5 matrículas ativas por aluno
 
 ---
 
 ### 📌 Validação de Dados
-- Email do aluno deve ser **único**  
-- Campos obrigatórios:
-  - nome (aluno)  
-  - email (aluno)  
-  - título (curso)  
-- ❌ Não permite valores vazios ou inválidos  
+
+* Email deve ser único
+* Campos obrigatórios:
+
+  * nome
+  * email
+  * nome do curso
+* ❌ Não permite valores vazios ou inválidos
 
 ---
 
 ### 📌 Status da Matrícula
 
-Cada matrícula possui um status:
-
-- `ativa`  
-- `cancelada`  
-- `concluida`  
-
----
-
-## 📡 Endpoints Principais
-
-### 🔹 Alunos
-```
-
-POST   /alunos
-GET    /alunos
-GET    /alunos/{id}
-PUT    /alunos/{id}
-DELETE /alunos/{id}
-
-```
-
-### 🔹 Cursos
-```
-
-POST   /cursos
-GET    /cursos
-GET    /cursos/{id}
-PUT    /cursos/{id}
-DELETE /cursos/{id}
-
-```
-
-### 🔹 Matrículas
-```
-
-POST   /matriculas
-GET    /alunos/{id}/cursos
-GET    /cursos/{id}/alunos
-PUT    /matriculas/{id}/cancelar
-PUT    /matriculas/{id}/concluir
-
-```
-
----
-
-## 📄 Paginação
-
-Alguns endpoints suportam paginação:
-
-```
-
-GET /alunos?page=1&limit=10
-GET /cursos?page=1&limit=10
-
-````
+* ativa
+* cancelada
+* concluida
 
 ---
 
 ## ❗ Tratamento de Erros
 
-A API retorna erros padronizados:
+Formato padrão:
 
 ```json
 {
   "error": "Mensagem descritiva",
   "statusCode": 400
 }
-````
+```
 
 ### Códigos:
 
-* `400` → Requisição inválida
-* `404` → Recurso não encontrado
-* `500` → Erro interno
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-* Python 3.12
-* FastAPI
-* SQLAlchemy
-* Pydantic
-* Uvicorn
-
----
-
-## ▶️ Como Executar o Projeto
-
-### 1. Clonar o repositório
-
-```bash
-git clone <seu-repositorio>
-cd api_escola
-```
-
-### 2. Instalar dependências
-
-```bash
-pip install -r requirements.txt
-```
-
-Ou manualmente:
-
-```bash
-pip install fastapi uvicorn sqlalchemy pydantic[email]
-```
-
-### 3. Rodar o servidor
-
-```bash
-python -m uvicorn main:app --reload
-```
-
-### 4. Acessar no navegador
-
-* API:
-
-```
-http://127.0.0.1:8000
-```
-
-* Documentação interativa (Swagger):
-
-```
-http://127.0.0.1:8000/docs
-```
+* 400 → Requisição inválida
+* 404 → Recurso não encontrado
+* 422 → Erro de validação
+* 500 → Erro interno
 
 ---
 
@@ -215,13 +279,20 @@ api_escola/
 * 🔐 Autenticação com JWT
 * 👤 Controle de usuários
 * 📊 Dashboard
-* 🐳 Dockerização
-* ☁️ Deploy em nuvem
+* 🐳 Docker
+* ☁️ Deploy
 
 ---
 
 ## 👨‍💻 Autor
 
-**Marcos Vinicius Sousa Ferreira**
+Marcos Vinicius Sousa Ferreira
 
-Projeto desenvolvido para prática de backend com FastAPI 🚀
+Projeto desenvolvido para prática de backend com FastAPI.
+
+```
+
+---
+
+
+```
